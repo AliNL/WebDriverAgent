@@ -24,6 +24,13 @@
       }
       return FBResponseWithOK();
     }],
+    // TODO: Those endpoints are deprecated and will die soon
+    [[FBRoute POST:@"/simulator/touch_id"] respondWithBlock: ^ id<FBResponsePayload> (FBRouteRequest *request) {
+      if (![[XCUIDevice sharedDevice] fb_fingerTouchShouldMatch:[request.arguments[@"match"] boolValue]]) {
+        return FBResponseWithStatus(FBCommandStatusUnsupported, nil);
+      }
+      return FBResponseWithOK();
+    }]
   ];
 }
 
